@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Zumbis Capitalistas</title>
+    <script src="js/scripts.js"></script>
+    <script>
+        function novoJogo() {
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('novoJogo').style.display = 'block';
+        }
+
+        function novoJogoNome(nome) {
+            gerenciador.setSaveGame(nome);
+            document.getElementById('novoJogo').style.display = 'none';
+            document.getElementById('menu').style.display = 'block';
+        }
+        
+        function carregarJogo() {
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('carregarJogo').style.display = 'block';
+
+            for (let i = 0; i < document.getElementById("select").getElementsByTagName("option").length; i++) {
+                let x = document.getElementById("select");
+                x.remote(0);
+            }
+
+            for (jogador of gerenciador.jogadores) {
+                let x = document.getElementById("select");
+                let c = document.createElement("option");
+                c.text = jogador.nome;
+                x.options.add(c, 0);
+            }
+        }
+
+        function carregarJogoNome(nome) {
+            document.getElementById('carregarJogo').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            const jogador = gerenciador.getSaveGame(nome);
+            setInterval(atualizar,10)
+        }
+
+        function menu(div) {
+            div.style.display = 'none';
+            document.getElementById('menu').style.display = 'block';
+        }
+
+        function atualizar() {
+            document.getElementById('qtdCerebros').innerText = jogador.cerebro.quantidade;
+        }
+    </script>
+</head>
+<body>
+    <h1>Zumbis Capitalistas</h1>
+
+    <div id="menu">
+        <button onclick="novoJogo()">Novo Jogo</button>
+        <button onclick="carregarJogo()">Carregar Jogo</button>
+    </div>
+
+    <div id="novoJogo" style="display: none;">
+        <input type="text" id="nome">
+        <button onclick="novoJogoNome(document.getElementById('nome').value)">Criar</button>
+        <button onclick="menu(document.getElementById('novoJogo'))">Menu</button>
+    </div>
+
+    <div id="carregarJogo" style="display: none;">
+        <select id="select"></select>
+        <button onclick="carregarJogoNome(document.getElementById('select').value)">Começar</button>
+        <button onclick="menu(document.getElementById('carregarJogo'))">Menu</button>
+    </div>
+
+    <div id="game" style="display: none;">
+        <div id="qtdCerebros"></div>
+
+        <button onclick="menu(document.getElementById('game'))">Menu</button>
+    </div>
+</body>
+</html>
