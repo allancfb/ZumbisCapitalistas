@@ -1,6 +1,6 @@
 class Cerebro {
-    constructor() {
-        this.quantidade = 0;
+    constructor(quantidade = 0) {
+        this.quantidade = quantidade;
     }
 
     incrementar(incremento) {
@@ -242,6 +242,17 @@ class Jogador {
         this.cerebrosPorClique = 1;
     }
 
+    recuperarSave(jogadorSalvo) {
+        this.cerebro = new Cerebro(jogadorSalvo.cerebro.quantidade);
+        this.cerebroDourado = new CerebroDourado(jogadorSalvo.cerebroDourado.quantidade);
+        this.populacao = new Populacao(jogadorSalvo.populacao.quantidade);
+        this.zumbis = jogadorSalvo.zumbis;
+        this.zumbisEspeciais = jogadorSalvo.zumbisEspeciais;
+        this.conquistas = jogadorSalvo.conquistas;
+        this.upgrades = jogadorSalvo.upgrades;
+        this.cerebrosPorClique = jogadorSalvo.cerebrosPorClique;
+    }
+
     getNome() {
         return this.nome;
     }
@@ -302,10 +313,14 @@ class Jogador {
 class GerenciadorDeSaves {
     constructor() {
         let jogadoresSalvos = localStorage.getItem('jogadores');
+        this.jogadores = [];
         if (jogadoresSalvos != null) {
-            this.jogadores = JSON.parse(jogadoresSalvos);;
-        } else {
-            this.jogadores = [];
+            let jogadores = JSON.parse(jogadoresSalvos);
+            for (let jogadorSalvo of jogadores) {
+                let jogador = new Jogador(jogadorSalvo.nome);
+                jogador.recuperarSave(jogadorSalvo);
+                this.jogadores.push(jogador);
+            }
         }
     }
 
