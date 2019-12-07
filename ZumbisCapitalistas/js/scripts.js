@@ -301,7 +301,12 @@ class Jogador {
 
 class GerenciadorDeSaves {
     constructor() {
-        this.jogadores = [];
+        let jogadoresSalvos = localStorage.getItem('jogadores');
+        if (jogadoresSalvos != null) {
+            this.jogadores = JSON.parse(jogadoresSalvos);;
+        } else {
+            this.jogadores = [];
+        }
     }
 
     getSaveGame(nome) {
@@ -319,15 +324,15 @@ class GerenciadorDeSaves {
     }
 
     deleteSaveGame(nome) {
-        for (let jogador of this.jogadores) {
-            if (jogador.nome = nome) {
-                return this.jogadores;
-            }
-        }
+        this.jogadores = this.jogadores.filter(jogador => jogador.nome != nome);
     }
 
     getJogadores() {
         return this.jogadores;
+    }
+
+    salvarJogo() {
+        localStorage.setItem('jogadores', JSON.stringify(this.jogadores));
     }
 }
 

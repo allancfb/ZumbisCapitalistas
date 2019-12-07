@@ -7,6 +7,8 @@
     <title>Zumbis Capitalistas</title>
     <script src="js/scripts.js"></script>
     <script>
+        setInterval(saveGameLoop, 100);
+        
         function novoJogo() {
             document.getElementById('menu').style.display = 'none';
             document.getElementById('novoJogo').style.display = 'block';
@@ -22,10 +24,7 @@
             document.getElementById('menu').style.display = 'none';
             document.getElementById('carregarJogo').style.display = 'block';
 
-            for (let i = 0; i < gerenciador.jogadores.length; i++) {
-                let x = document.getElementById("select");
-                x.remove(0);
-            }
+            document.getElementById("select").options.length = 0;
 
             for (jogador of gerenciador.jogadores) {
                 let x = document.getElementById("select");
@@ -42,6 +41,11 @@
             setInterval(atualizar,10)
         }
 
+        function apagarJogoNome(nome) {
+            gerenciador.deleteSaveGame(nome);
+            carregarJogo(nome);
+        }
+
         function menu(div) {
             div.style.display = 'none';
             document.getElementById('menu').style.display = 'block';
@@ -51,6 +55,10 @@
             document.getElementById('qtdCerebros').innerText = jogador.cerebro.quantidade;
             document.getElementById('qtdCerebrosDourados').innerText = jogador.cerebroDourado.quantidade;
             document.getElementById('qtdPopulacao').innerText = jogador.populacao.quantidade;
+        }
+
+        function saveGameLoop() {
+            gerenciador.salvarJogo();
         }
 
         function clicarPlaneta() {
@@ -101,6 +109,7 @@
     <div id="carregarJogo" style="display: none;">
         <select id="select"></select>
         <button onclick="carregarJogoNome(document.getElementById('select').options[document.getElementById('select').selectedIndex].value)">Começar</button>
+        <button onclick="apagarJogoNome(document.getElementById('select').options[document.getElementById('select').selectedIndex].value)">Apagar</button>
         <button onclick="menu(document.getElementById('carregarJogo'))">Menu</button>
     </div>
 
