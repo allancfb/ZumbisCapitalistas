@@ -306,14 +306,14 @@ class GerenciadorDeSaves {
 
     getSaveGame(nome) {
         for (let jogador of this.jogadores) {
-            if (jogador.nome = nome) {
-                return this.jogadores
+            if (jogador.nome == nome) {
+                return jogador;
             }
         }
     }
 
     setSaveGame(nome) {
-        const jogador = new Jogador(nome);
+        let jogador = new Jogador(nome);
         this.jogadores.push(jogador);
         return jogador;
     }
@@ -332,3 +332,4 @@ class GerenciadorDeSaves {
 }
 
 const gerenciador = new GerenciadorDeSaves()
+var jogador;
