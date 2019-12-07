@@ -15,7 +15,7 @@
         function novoJogoNome(nome) {
             gerenciador.setSaveGame(nome);
             document.getElementById('novoJogo').style.display = 'none';
-            document.getElementById('menu').style.display = 'block';
+            carregarJogoNome(nome);
         }
         
         function carregarJogo() {

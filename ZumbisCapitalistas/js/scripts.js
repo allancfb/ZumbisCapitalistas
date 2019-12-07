@@ -331,5 +331,5 @@ class GerenciadorDeSaves {
     }
 }
 
-const gerenciador = new GerenciadorDeSaves()
+const gerenciador = new GerenciadorDeSaves();
 var jogador;
