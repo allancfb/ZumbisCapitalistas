@@ -28,6 +28,11 @@ class Cerebro {
 class Populacao {
     constructor(quantidade) {
         this.quantidade = quantidade;
+        this.nascimentosPorSegundo = 360000;
+    }
+
+    incrementar() {
+        this.quantidade += this.nascimentosPorSegundo;
     }
 
     decrementar(decremento) {
@@ -42,30 +47,33 @@ class CerebroDourado extends Cerebro {
 }
 
 class Zumbi {
-    constructor() {
-        this.cerebrosPorClique = 1;
+    constructor(tipo) {
+        this.tipo = tipo;
+        this.cerebrosPorSegundo = 1;
         this.nivel = 1;
     }
 
     upgrade() {
         this.nivel++;
-        this.cerebrosPorClique *= 2;
+        this.cerebrosPorSegundo *= 2;
     }
 
-    gerarCerebros(cerebro) {
-        cerebro.incrementar(this.cerebrosPorClique);
+    gerarCerebros() {
+        let cerebros = loja.getCpSZumbi(this.tipo);
+        jogador.cerebro.incrementar(cerebros);
+        jogador.populacao.decrementar(cerebros);
     }
 
-    getCerebrosPorClique() {
-        return this.cerebrosPorClique;
+    getCerebrosPorSegundo() {
+        return this.cerebrosPorSegundo;
     }
 
     getNivel() {
         return this.nivel;
     }
 
-    setCerebrosPorClique(cerebrosPorClique) {
-        this.cerebrosPorClique = cerebrosPorClique;
+    setCerebrosPorSegundo(cerebrosPorSegundo) {
+        this.cerebrosPorSegundo = cerebrosPorSegundo;
     }
 
     setNivel(nivel) {
@@ -74,9 +82,9 @@ class Zumbi {
 }
 
 class ZumbiEspecial extends Zumbi {
-    constructor() {
-        super();
-        this.cerebrosPorClique *= 2;
+    constructor(tipo) {
+        super(tipo);
+        this.cerebrosPorSegundo *= 2;
     }
 }
 
@@ -161,6 +169,16 @@ const efeito = {
     LOJA: 'loja'
 }
 
+const tipoZumbi = {
+    CACADOR: 0,
+    CRIMINOSO: 1,
+    COMERCIANTE: 2,
+    INDUSTRIAL: 3,
+    INVESTIDOR: 4,
+    BANQUEIRO: 5,
+    BURGUES: 6
+}
+
 class Humano {
     constructor(tipoCerebro) {
         this.tipoCerebro = tipoCerebro;
@@ -191,15 +209,19 @@ class Loja {
         this.listaItens = ['Comprar Zumbis', 'Comprar Zumbis Especiais', 'Comprar Upgrades', 'Comprar Cérebro Dourado'];
     }
 
-    comprarZumbis(quantidade, zumbis) {
-        for (let i = 0; i < quantidade; i++) {
-            zumbis.push(new Zumbi());
+    comprarZumbis(tipo, quantidade) {
+        let precoTotal = quantidade * loja.getPrecoZumbi(tipo);
+        if (precoTotal <= jogador.cerebro.quantidade) {
+            for (let i = 0; i < quantidade; i++) {
+                jogador.adicionarZumbi(new Zumbi(tipo));
+                jogador.cerebro.decrementar(precoTotal);
+            }
         }
     }
 
-    comprarZumbisEspeciais(quantidade, zumbisEspeciais) {
+    comprarZumbisEspeciais(tipo, quantidade) {
         for (let i = 0; i < quantidade; i++) {
-            zumbisEspeciais.push(new ZumbiEspecial());
+            jogador.adicionarZumbiEspecial(new ZumbiEspecial(tipo));
         }
     }
 
@@ -213,6 +235,44 @@ class Loja {
                 upgrade.aplicar();
                 break;
             }
+        }
+    }
+
+    getPrecoZumbi(tipo) {
+        switch (tipo) {
+            case tipoZumbi.CACADOR:
+                return 100;
+            case tipoZumbi.CRIMINOSO:
+                return 200;
+            case tipoZumbi.COMERCIANTE:
+                return 800;
+            case tipoZumbi.INDUSTRIAL:
+                return 30000;
+            case tipoZumbi.INVESTIDOR:
+                return 500000;
+            case tipoZumbi.BANQUEIRO:
+                return 3000000;
+            case tipoZumbi.BURGUES:
+                return 200000000;
+        }
+    }
+
+    getCpSZumbi(tipo) {
+        switch (tipo) {
+            case tipoZumbi.CACADOR:
+                return 1;
+            case tipoZumbi.CRIMINOSO:
+                return 4;
+            case tipoZumbi.COMERCIANTE:
+                return 90;
+            case tipoZumbi.INDUSTRIAL:
+                return 700;
+            case tipoZumbi.INVESTIDOR:
+                return 20000;
+            case tipoZumbi.BANQUEIRO:
+                return 100000;
+            case tipoZumbi.BURGUES:
+                return 5000000;
         }
     }
 
@@ -246,11 +306,18 @@ class Jogador {
         this.cerebro = new Cerebro(jogadorSalvo.cerebro.quantidade);
         this.cerebroDourado = new CerebroDourado(jogadorSalvo.cerebroDourado.quantidade);
         this.populacao = new Populacao(jogadorSalvo.populacao.quantidade);
-        this.zumbis = jogadorSalvo.zumbis;
+        this.zumbis = [];
+        for (let zumbi of jogadorSalvo.zumbis) {
+            this.zumbis.push(new Zumbi(zumbi.tipo));
+        }
         this.zumbisEspeciais = jogadorSalvo.zumbisEspeciais;
         this.conquistas = jogadorSalvo.conquistas;
         this.upgrades = jogadorSalvo.upgrades;
         this.cerebrosPorClique = jogadorSalvo.cerebrosPorClique;
+    }
+
+    adicionarZumbi(zumbi) {
+        this.zumbis.push(zumbi);
     }
 
     getNome() {
@@ -352,4 +419,5 @@ class GerenciadorDeSaves {
 }
 
 const gerenciador = new GerenciadorDeSaves();
+const loja = new Loja();
 var jogador;

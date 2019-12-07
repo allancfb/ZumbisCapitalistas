@@ -38,7 +38,8 @@
             document.getElementById('carregarJogo').style.display = 'none';
             document.getElementById('game').style.display = 'block';
             jogador = gerenciador.getSaveGame(nome);
-            setInterval(atualizar,10)
+            setInterval(atualizar,10);
+            setInterval(tick, 1000);
         }
 
         function apagarJogoNome(nome) {
@@ -55,10 +56,28 @@
             document.getElementById('qtdCerebros').innerText = jogador.cerebro.quantidade;
             document.getElementById('qtdCerebrosDourados').innerText = jogador.cerebroDourado.quantidade;
             document.getElementById('qtdPopulacao').innerText = jogador.populacao.quantidade;
+            let contadoresZumbis = document.getElementsByClassName('qtdZumbis');
+            let precosZumbis = document.getElementsByClassName('precosZumbis');
+            let cpsZumbis = document.getElementsByClassName('cpsZumbis');
+
+            for (let i = 0; i < contadoresZumbis.length; i++) {
+                contadoresZumbis[i].innerText = jogador.zumbis.filter(zumbi => zumbi.tipo == i).length;
+                precosZumbis[i].innerText = loja.getPrecoZumbi(i);
+                cpsZumbis[i].innerText = loja.getCpSZumbi(i);
+            }
         }
 
         function saveGameLoop() {
             gerenciador.salvarJogo();
+        }
+
+        function tick() {
+            jogador.populacao.incrementar();
+
+            for (zumbi of jogador.zumbis) {
+                zumbi.gerarCerebros();
+            }
+
         }
 
         function clicarPlaneta() {
@@ -90,6 +109,10 @@
             jogador.populacao.decrementar(cerebros);
         }
 
+        function clicarZumbi(tipo) {
+            loja.comprarZumbis(tipo, 1);
+        }
+
     </script>
 </head>
 <body>
@@ -119,6 +142,38 @@
         <p><span id="qtdCerebrosDourados" style="display: inline;"></span><span> Cérebros Dourados</span></p>
         <button onclick="clicarPlaneta()">Planeta</button>
         <button onclick="menu(document.getElementById('game'))">Menu</button>
+
+        <br><br>
+
+        <p>Recrutamento de Zumbis</p>
+        <button onclick="clicarZumbi(tipoZumbi.CACADOR)">Zumbi Caçador</button>
+        <span>|| R: </span><span class="qtdZumbis"></span> 
+        <span>|| $: </span><span class="precosZumbis"></span>
+        <span>|| CpS: </span><span class="cpsZumbis"></span><br>
+        <button onclick="clicarZumbi(tipoZumbi.CRIMINOSO)">Zumbi Criminoso</button>
+        <span>|| R: </span><span class="qtdZumbis"></span> 
+        <span>|| $: </span><span class="precosZumbis"></span>
+        <span>|| CpS: </span><span class="cpsZumbis"></span><br>
+        <button onclick="clicarZumbi(tipoZumbi.COMERCIANTE)">Zumbi Comerciante</button>
+        <span>|| R: </span><span class="qtdZumbis"></span> 
+        <span>|| $: </span><span class="precosZumbis"></span>
+        <span>|| CpS: </span><span class="cpsZumbis"></span><br>
+        <button onclick="clicarZumbi(tipoZumbi.INDUSTRIAL)">Zumbi Industrial</button>
+        <span>|| R: </span><span class="qtdZumbis"></span> 
+        <span>|| $: </span><span class="precosZumbis"></span>
+        <span>|| CpS: </span><span class="cpsZumbis"></span><br>
+        <button onclick="clicarZumbi(tipoZumbi.INVESTIDOR)">Zumbi Investidor</button>
+        <span>|| R: </span><span class="qtdZumbis"></span> 
+        <span>|| $: </span><span class="precosZumbis"></span>
+        <span>|| CpS: </span><span class="cpsZumbis"></span><br>
+        <button onclick="clicarZumbi(tipoZumbi.BANQUEIRO)">Zumbi Banqueiro</button>
+        <span>|| R: </span><span class="qtdZumbis"></span> 
+        <span>|| $: </span><span class="precosZumbis"></span>
+        <span>|| CpS: </span><span class="cpsZumbis"></span><br>
+        <button onclick="clicarZumbi(tipoZumbi.BURGUES)">Zumbi Burguês</button>
+        <span>|| R: </span><span class="qtdZumbis"></span> 
+        <span>|| $: </span><span class="precosZumbis"></span>
+        <span>|| CpS: </span><span class="cpsZumbis"></span>
     </div>
 </body>
 </html>
