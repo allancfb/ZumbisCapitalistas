@@ -49,7 +49,39 @@
 
         function atualizar() {
             document.getElementById('qtdCerebros').innerText = jogador.cerebro.quantidade;
+            document.getElementById('qtdCerebrosDourados').innerText = jogador.cerebroDourado.quantidade;
+            document.getElementById('qtdPopulacao').innerText = jogador.populacao.quantidade;
         }
+
+        function clicarPlaneta() {
+            let cerebros = jogador.cerebrosPorClique;
+            let tipo = definirTipo();
+            aumentarQuantidadeCerebros(cerebros, tipo);
+        }
+
+        function definirTipo() {
+            let prob = {0: 0.95, 1: 0.05}; // 0.05 de probabilidade de se obter um cérebro dourado
+            rand = Math.random();
+            soma = 0;
+            
+            for (i in prob) {
+                soma += prob[i];
+                if (rand <= soma) {
+                    return i;
+                }
+            }
+        }
+
+        function aumentarQuantidadeCerebros(cerebros, tipo) {
+            if (tipo == 0) {
+                jogador.cerebro.incrementar(cerebros);
+            } else {
+                jogador.cerebroDourado.incrementar(cerebros);
+            }
+            
+            jogador.populacao.decrementar(cerebros);
+        }
+
     </script>
 </head>
 <body>
@@ -73,8 +105,10 @@
     </div>
 
     <div id="game" style="display: none;">
-        <div id="qtdCerebros"></div>
-
+        <p><span> População do planeta: </span><span id="qtdPopulacao" style="display: inline;"></span></p>
+        <p><span id="qtdCerebros" style="display: inline;"></span><span> Cérebros Comuns</span></p>
+        <p><span id="qtdCerebrosDourados" style="display: inline;"></span><span> Cérebros Dourados</span></p>
+        <button onclick="clicarPlaneta()">Planeta</button>
         <button onclick="menu(document.getElementById('game'))">Menu</button>
     </div>
 </body>

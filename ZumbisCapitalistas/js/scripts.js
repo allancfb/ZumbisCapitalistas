@@ -25,6 +25,16 @@ class Cerebro {
     }
 }
 
+class Populacao {
+    constructor(quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    decrementar(decremento) {
+        this.quantidade -= decremento;
+    }
+}
+
 class CerebroDourado extends Cerebro {
     constructor() {
         super();
@@ -224,10 +234,12 @@ class Jogador {
         this.nome = nome;
         this.cerebro = new Cerebro();
         this.cerebroDourado = new CerebroDourado();
+        this.populacao = new Populacao(8000000000);
         this.zumbis = [];
         this.zumbisEspeciais = [];
         this.conquistas = [];
         this.upgrades = [];
+        this.cerebrosPorClique = 1;
     }
 
     getNome() {
