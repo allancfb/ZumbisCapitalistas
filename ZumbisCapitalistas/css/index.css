@@ -1,0 +1,189 @@
+@import 'https://fonts.googleapis.com/css?family=Anton';
+ * {
+	 box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+h1 {
+    font-family: 'Bowlby One SC', cursive;
+    font-size: 400%;
+    color: #1fd656;
+}
+
+#menu, #novoJogo, #carregarJogo {
+    background-color: #000000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Autor do estilo do botão: Tim Rijkse */
+.skew-button {
+	 cursor: pointer;
+	 outline: none;
+	 /* transform: translate3d(-50%, -50%, 0); */
+	 backface-visibility: hidden;
+	 position: relative;
+	 display: inline-block;
+	 padding: 0;
+	 background-color: transparent;
+	 border: none;
+	 font: 1.3rem 'Anton', sans-serif;
+	 text-transform: uppercase;
+	 letter-spacing: 0.1em;
+	 color: #fff;
+}
+ .skew-button span {
+	 transform: translate3d(0, 0, 0);
+	 backface-visibility: hidden;
+	 position: relative;
+	 display: block;
+	 width: 100%;
+	 height: 100%;
+	 padding: 20px 50px;
+	 z-index: 3;
+}
+ .skew-button:before, .skew-button span:before {
+	 content: '';
+	 position: absolute;
+	 left: 50%;
+	 top: 50%;
+	 transform: translate(-50%, -50%) skewX(-20deg);
+	 width: 100%;
+	 height: 50px;
+	 border: 1px solid #30854a;
+	 z-index: 2;
+}
+ .skew-button span:before {
+	 display: block;
+	 transform: translate(-50%, -50%) skew(-20deg);
+	 transform-origin: center center;
+	 z-indeX: -1;
+}
+ .skew-button:after {
+	 transition: all 100ms ease-out;
+	 content: '';
+	 position: absolute;
+	 left: 0;
+	 top: 0;
+	 transform: skewX(-20deg) scaleX(0);
+	 width: 100%;
+	 height: 100%;
+	 background-color: #30854a;
+	 border: 1px solid transparent;
+	 z-index: 1;
+}
+ .skew-button:hover span:before {
+	 animation: fill 0.5s ease-out;
+	 animation-fill-mode: forwards;
+}
+ .skew-button:hover:after {
+	 animation: swoosh 0.7s ease-in;
+}
+ .skew-button:active:before {
+	 background-color: #05310b;
+}
+ @keyframes swoosh {
+	 0% {
+		 transform-origin: left center;
+	}
+	 20% {
+		 transform: skewX(-20deg) scaleX(1);
+		 transform-origin: left center;
+	}
+	 21% {
+		 transform-origin: right center;
+	}
+	 50% {
+		 transform: skewX(-20deg) scaleX(0);
+		 transform-origin: right center;
+	}
+}
+ @keyframes fill {
+	 0% {
+		 background-color: rgba(14, 56, 118, 0);
+	}
+	 20% {
+		 opacity: 0.5;
+		 border-width: 15px;
+		 border-color: #094813;
+	}
+	 100% {
+		 opacity: 0.5;
+		 border-width: 1px;
+		 background-color: rgba(14, 118, 49, 0.5);
+	}
+}
+  
+input[type="text"] {
+    box-sizing: border-box;
+    width: 30%;
+    height: calc(1em + 1px);
+    margin: 0 0 1em;
+    padding: 1em;
+    border: 1px solid #30854a;
+    background: #000;
+    resize: none;
+    outline: none;
+    font-size: 200%;
+    color: #fff;
+}
+
+/* Autor do estilo do select: Rau */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #285c38;
+    background-image: none;
+    font-size: 150%;
+  }
+  /* Remove IE arrow */
+  select::-ms-expand {
+    display: none;
+  }
+  /* Custom Select */
+  .select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #285c38;
+    overflow: hidden;
+    border-radius: .25em;
+  }
+  select {
+    flex: 1;
+    padding: 0 .5em;
+    color: #fff;
+    cursor: pointer;
+  }
+  /* Arrow */
+  .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #285c38;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+  }
+  /* Transition */
+  .select:hover::after {
+    color: #12f370;
+  }
