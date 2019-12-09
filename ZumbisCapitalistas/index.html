@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Zumbis Capitalistas</title>
+    <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
     <script src="js/scripts.js"></script>
     <script>
         setInterval(saveGameLoop, 100);
 
         function novoJogo() {
             document.getElementById('menu').style.display = 'none';
-            document.getElementById('novoJogo').style.display = 'block';
+            document.getElementById('novoJogo').style.display = 'flex';
         }
 
         function novoJogoNome(nome) {
@@ -22,7 +24,7 @@
         
         function carregarJogo() {
             document.getElementById('menu').style.display = 'none';
-            document.getElementById('carregarJogo').style.display = 'block';
+            document.getElementById('carregarJogo').style.display = 'flex';
 
             document.getElementById("select").options.length = 0;
 
@@ -49,7 +51,7 @@
 
         function menu(div) {
             div.style.display = 'none';
-            document.getElementById('menu').style.display = 'block';
+            document.getElementById('menu').style.display = 'flex';
         }
 
         function atualizar() {
@@ -116,24 +118,25 @@
     </script>
 </head>
 <body>
-    <h1>Zumbis Capitalistas</h1>
-
     <div id="menu">
-        <button onclick="novoJogo()">Novo Jogo</button>
-        <button onclick="carregarJogo()">Carregar Jogo</button>
+        <h1>Zumbis Capitalistas</h1>
+        <button class="skew-button" onclick="novoJogo()"><span>NOVO JOGO</span></button>
+        <button class="skew-button" onclick="carregarJogo()"><span>CARREGAR JOGO</span></button>
     </div>
 
     <div id="novoJogo" style="display: none;">
-        <input type="text" id="nome">
-        <button onclick="novoJogoNome(document.getElementById('nome').value)">Criar</button>
-        <button onclick="menu(document.getElementById('novoJogo'))">Menu</button>
+        <input type='text' id="nome" placeholder="Nome de usuário">
+        <button class="skew-button" onclick="novoJogoNome(document.getElementById('nome').value)"><span>COMEÇAR</span></button>
+        <button class="skew-button" onclick="menu(document.getElementById('novoJogo'))"><span>VOLTAR</span></button>
     </div>
 
     <div id="carregarJogo" style="display: none;">
-        <select id="select"></select>
-        <button onclick="carregarJogoNome(document.getElementById('select').options[document.getElementById('select').selectedIndex].value)">Começar</button>
-        <button onclick="apagarJogoNome(document.getElementById('select').options[document.getElementById('select').selectedIndex].value)">Apagar</button>
-        <button onclick="menu(document.getElementById('carregarJogo'))">Menu</button>
+        <div class="select">
+            <select name="slct" id="select"></select>
+        </div>
+        <button class="skew-button" onclick="carregarJogoNome(document.getElementById('select').options[document.getElementById('select').selectedIndex].value)"><span>COMEÇAR</span></button>
+        <button class="skew-button" onclick="apagarJogoNome(document.getElementById('select').options[document.getElementById('select').selectedIndex].value)"><span>APAGAR</span></button>
+        <button class="skew-button" onclick="menu(document.getElementById('carregarJogo'))"><span>VOLTAR</span></button>
     </div>
 
     <div id="game" style="display: none;">
